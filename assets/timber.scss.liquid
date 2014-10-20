@@ -195,13 +195,6 @@ $socialIconFontStack: 'icons';
   box-sizing: #{$box-sizing};
 }
 
-@function em($target, $context: $baseFontSize) {
-  @if $target == 0 {
-    @return 0;
-  }
-  @return $target / $context + 0em;
-}
-
 @function color-control($color) {
   @if (lightness( $color ) > 40) {
     @return #000;
@@ -209,6 +202,35 @@ $socialIconFontStack: 'icons';
   @else {
     @return #fff;
   }
+}
+
+/*============================================================================
+  Unitless em() calculations borrowed from Bourbon
+    - https://github.com/thoughtbot/bourbon
+==============================================================================*/
+
+// Strips the units from a value. e.g. 12px -> 12
+
+@function strip-units($val) {
+  @return ($val / ($val * 0 + 1));
+}
+@function strip-units($val) {
+  @return ($val / ($val * 0 + 1));
+}
+
+
+// Convert pixels to ems
+// eg. for a relational value of 12px write em(12) when the parent is 16px
+// if the parent is another value say 24px write em(12, 24)
+
+@function em($pxval, $base: $em-base) {
+  @if not unitless($pxval) {
+      $pxval: strip-units($pxval);
+  }
+  @if not unitless($base) {
+      $base: strip-units($base);
+  }
+  @return ($pxval / $base) * 1em;
 }
 
 /*============================================================================
@@ -746,27 +768,27 @@ h1, h2, h3, h4, h5, h6 {
 
 /*================ Use em() Sass function to declare font-size ================*/
 h1 {
-  font-size: em(36px);
+  font-size: em(36);
 }
 
 h2 {
-  font-size: em(28px);
+  font-size: em(28);
 }
 
 h3 {
-  font-size: em(22px);
+  font-size: em(22);
 }
 
 h4 {
-  font-size: em(20px);
+  font-size: em(20);
 }
 
 h5 {
-  font-size: em(16px);
+  font-size: em(16);
 }
 
 h6 {
-  font-size: em(14px);
+  font-size: em(14);
 }
 
 
@@ -1041,12 +1063,12 @@ html input[disabled] {
 
   &.btn--small {
     padding: 4px 5px;
-    font-size: em(12px);
+    font-size: em(12);
   }
 
   &.btn--large {
     padding: 12px 15px;
-    font-size: em(16px);
+    font-size: em(16);
   }
 
   &.btn--full {
@@ -1683,7 +1705,7 @@ label.error {
 .pagination-custom-lg > li > a,
 .pagination-custom-lg > li > span {
   padding: 10px 16px;
-  font-size: em(18px);
+  font-size: em(18);
 }
 
 .pagination-custom-lg > li:first-child > a,
@@ -1701,7 +1723,7 @@ label.error {
 .pagination-custom-sm > li > a,
 .pagination-custom-sm > li > span {
   padding: 5px 10px;
-  font-size: em(12px);
+  font-size: em(12);
 }
 
 .pagination-custom-sm > li:first-child > a,
@@ -1744,7 +1766,7 @@ label.error {
 
 .header-logo {
   text-align: center;
-  font-size: em(40px);
+  font-size: em(40);
   margin: 0 auto $gutter/2;
   max-width: {{ settings.logo_max_width }}px;
 
@@ -1805,7 +1827,7 @@ label.error {
 }
 
 .site-nav {
-  font-size: em(16px);
+  font-size: em(16);
   cursor: default;
 
   li {
@@ -2106,7 +2128,7 @@ label.error {
 .cart-mini-labels {
   display: block;
   margin: ($gutter / 3) 0;
-  font-size: em(12px);
+  font-size: em(12);
 
   @include at-query ($min, $large) {
     display: none;
@@ -2122,6 +2144,6 @@ label.error {
   text-align: center;
   padding: 100px 0;
   color: #aaa;
-  font-size: em(12px);
+  font-size: em(12);
   text-decoration: none;
 }
