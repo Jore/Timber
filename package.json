@@ -1,0 +1,17 @@
+{
+  "name": "timber",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Timber with Gulp",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.8.8",
+    "gulp-changed": "^1.0.0",
+    "gulp-cssimport": "^1.2.3",
+    "gulp-debug": "^1.0.1",
+    "gulp-rename": "^1.2.0",
+    "gulp-shell": "^0.2.10",
+    "gulp-tap": "^0.1.3",
+    "gulp-util": "^3.0.1"
+  }
+}
