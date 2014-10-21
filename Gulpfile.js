@@ -7,9 +7,11 @@ var shell     = require('gulp-shell');
 var rename    = require('gulp-rename');
 var debug     = require('gulp-debug');
 var changed   = require('gulp-changed');
+var tap       = require('gulp-tap');
 
 var paths = {
   css       : 'css/**/*.scss',
+  dist      : 'dist/',
   assets    : 'assets/**/*.*',
   config    : 'config/**/*.*',
   layout    : 'layout/**/*.*',
@@ -27,18 +29,23 @@ gulp.task('concat', function () {
 });
 
 gulp.task('upload', function () {
-  return gulp.src([paths.assets, paths.config, paths.layout, paths.locales, paths.snippets, paths.templates])
-    // .pipe(debug({verbose: true}))
-    .pipe(changed([paths.assets, paths.config, paths.layout, paths.locales, paths.snippets, paths.templates]))
+  return gulp.src([paths.assets, paths.config, paths.layout, paths.locales, paths.snippets, paths.templates], {base: '.'})
+    .pipe(changed(paths.dist))
     .pipe(shell([
-      'echo <%= f(file.path, file.cwd) %>'
+      'theme upload <%= f(file.path, file.cwd) %>'
     ], {
       templateData: {
         f: function (s, cwd) {
           return s.replace(cwd, '');
         }
       }
-    }));
+    }))
+    .pipe(gulp.dest(paths.dist));
+});
+
+gulp.task('build-dist', function() {
+  return gulp.src([paths.assets, paths.config, paths.layout, paths.locales, paths.snippets, paths.templates], {base: '.'})
+    .pipe(gulp.dest(paths.dist));
 });
 
 gulp.task('watch', function () {
